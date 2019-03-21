@@ -1,11 +1,170 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>repo1</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-</projectDescription>
+This is the whole source code for the web page.
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+
+<body>
+<select style="position:absolute; left:38%; top:6%" id="opt">
+  <option value="1">Normal Vision</option>
+  <option value="2">Deuteranope</option>
+  <option value="3">Protanope</option>
+  <option value="4">Tritanope</option>
+</select>
+
+<p id="cx" style="display: none;"></p>
+<p id="cc" ></p>
+
+<input type="button" name= "select" value="Select" style="position:absolute; left:46%; top:5.5%;width:53px;height:25px;" onclick="user_type()">
+
+<label  style="font-size: 15px;position:absolute; left:32%; top:23%;">Enter the number of rounds: </label>
+<input type="number" min="0" name="num"  style="position:absolute; left:45%; top:22.7%;width:30px" id= "num" > 
+
+<input type="button" name= "start" value="Start" style="position:absolute; left:53%; top:22.4%;width:53px;height:25px;" onClick="start_game()">
+
+<input type="button" id= "c1"  style="position:absolute; left:29%; top:35%;width:100px;height:100px;" onClick="stop(1)">
+<input type="button" id= "c2"  style="position:absolute; left:37%; top:35%;width:100px;height:100px;" onClick="stop(2)">
+<input type="button" id= "c3"  style="position:absolute; left:45%; top:35%;width:100px;height:100px;" onClick="stop(3)">
+<input type="button" id= "c4"  style="position:absolute; left:53%; top:35%;width:100px;height:100px;" onClick="stop(4)">
+
+<p id="color" style="position:absolute; left:44%; top:52%;"></p>
+
+<script  type="text/javascript" >
+
+var time_arr = [];
+
+ var correct=0;
+ var incorrect=0;
+
+function user_type(){
+
+var e = document.getElementById("opt");
+var strUser = e.options[e.selectedIndex].value;
+
+
+if(strUser.localeCompare("1")==0){
+document.getElementById("c1").style.backgroundColor ="blue";
+document.getElementById("c2").style.backgroundColor ="red";
+document.getElementById("c3").style.backgroundColor ="yellow";
+document.getElementById("c4").style.backgroundColor ="#33FF39";
+}
+else if(strUser.localeCompare("2")==0){
+document.getElementById("c1").style.backgroundColor ="blue";
+document.getElementById("c2").style.backgroundColor ="black";
+document.getElementById("c3").style.backgroundColor ="yellow";
+document.getElementById("c4").style.backgroundColor ="orange";
+}
+else if(strUser.localeCompare("3")==0){
+document.getElementById("c1").style.backgroundColor ="blue";
+document.getElementById("c2").style.backgroundColor ="black";
+document.getElementById("c3").style.backgroundColor ="pink";
+document.getElementById("c4").style.backgroundColor ="orange";
+}
+else if(strUser.localeCompare("4")==0){
+document.getElementById("c1").style.backgroundColor ="pink";
+document.getElementById("c2").style.backgroundColor ="red";
+document.getElementById("c3").style.backgroundColor ="yellow";
+document.getElementById("c4").style.backgroundColor ="orange";
+}
+}
+
+function start_game(){
+
+var min=1; 
+var max=5;
+var random =Math.floor(Math.random() * (+max - +min)) + +min;
+document.getElementById("cc").value=random;
+var e = document.getElementById("opt");
+var strUser = e.options[e.selectedIndex].value;
+
+var a1 = ["Blue", "Red", "Yellow","Green"];
+var a2 = ["Blue", "Black", "Yellow","Orange"];
+var a3 = ["Blue", "Black", "Pink","Orange"];
+var a4 = ["Pink", "Red", "Yellow","Orange"];
+
+var today = new Date();
+var mins1 = today.getMinutes() ;
+var secs1 = today.getSeconds();
+var ms1 = today.getMilliseconds();
+document.getElementById("cx").innerHTML=mins1+" "+secs1+" "+ms1;
+if(strUser.localeCompare("1")==0){
+document.getElementById("color").innerHTML=a1[random-1];
+}
+else if(strUser.localeCompare("2")==0){
+document.getElementById("color").innerHTML=a2[random-1];
+}
+else if(strUser.localeCompare("3")==0){
+document.getElementById("color").innerHTML=a3[random-1];
+}
+else if(strUser.localeCompare("4")==0){
+document.getElementById("color").innerHTML=a4[random-1];
+}
+
+}
+
+function stop(t){
+var check = document.getElementById("cc").value;
+if(check==t){
+correct+=1;
+}
+else{
+incorrect+=1;
+}
+var count=document.getElementById("num").value;
+document.getElementById("num").value=count-1;
+
+if(count>1){
+var today = new Date();
+var mins2 = today.getMinutes() ;
+var secs2 = today.getSeconds();
+var ms2 = today.getMilliseconds();
+var val = document.getElementById("cx").innerHTML.split(" ");
+
+var mins1=parseInt(val[0]);
+var secs1=parseInt(val[1]);
+var ms1 = parseInt(val[2]);
+
+
+var d1 = (mins2-mins1)*60000;
+var d2 = Math.abs((secs2-secs1))*1000;
+var d3 = Math.abs(ms2-ms1);
+time_arr.push(d1+d2+d3);
+}
+else{
+var today = new Date();
+var mins2 = today.getMinutes() ;
+var secs2 = today.getSeconds();
+var ms2 = today.getMilliseconds();
+var val = document.getElementById("cx").innerHTML.split(" ");
+
+var mins1=parseInt(val[0]);
+var secs1=parseInt(val[1]);
+var ms1 = parseInt(val[2]);
+
+
+var d1 = (mins2-mins1)*60000;
+var d2 = Math.abs((secs2-secs1))*1000;
+var d3 = Math.abs(ms2-ms1);
+time_arr.push(d1+d2+d3);
+var sum = 0;
+for( var i = 0; i < time_arr.length; i++ ){
+    sum += time_arr[i]; 
+}
+
+var avg = sum/(time_arr.length);
+
+alert("Number of correct answers : "+correct+"\nNumber of correct answers :"+incorrect+"\nAverage reaction time : "+ parseFloat(avg.toFixed(4))+" Milli Seconds" );
+}
+
+}
+
+
+</script>
+
+</body>
+</html>
