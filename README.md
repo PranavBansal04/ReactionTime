@@ -1,1 +1,3 @@
 This is a small web application for calculating someone's reactio time which is developed using basic html,css and javascript. Basically there are four different color boxes present on the page. As soon as a user clicks on start button a randomly generated color from the 4 colors will be shown and the user will need to click on the box of that color. And when the number of rounds end an alert will be shown including average response time, correct answers and wrong answers.
+The colors of the boxes are shown differently according to the type of user. If its a person with normal vision then any color can be chosen but if there is a user with some color blindness issue then colors are set according to that. 
+The reaction time is calculated in milli seconds.
